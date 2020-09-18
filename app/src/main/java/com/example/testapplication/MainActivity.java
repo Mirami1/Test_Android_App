@@ -1,12 +1,19 @@
 package com.example.testapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -17,8 +24,12 @@ import android.widget.Toast;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button button1;
-
+    private static final String CHANNEL_ID = "123";
+    NotificationManager notificationManager;
+    NotificationChannel notificationChannel;
+    NotificationCompat.Builder builder;
+    long itemId = 12345678910L;
+    int notificationId = ((Long)itemId).intValue();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +72,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ((Button) findViewById(R.id.btnStart)).setEnabled(true);
             ((Button) findViewById(R.id.btnStop)).setEnabled(false);
         }
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationChannel = new NotificationChannel(CHANNEL_ID,"My channel",NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.setDescription("Service notifications");
+        notificationChannel.enableLights(true);
+        notificationChannel.setLightColor(Color.RED);
+        notificationChannel.enableVibration(false);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+        Intent resultIntent = new Intent(this,MainActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //resultIntent.setAction(Intent.ACTION_MAIN);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this,0,resultIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+
+         builder= new NotificationCompat.Builder(this,CHANNEL_ID)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Сервис")
+                        .setContentText("Сервис запущен")
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true);
+
     }
 
 
@@ -83,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((Button) findViewById(R.id.btnStart)).setEnabled(false); //защита от повторного нажатия start во время записи
         ((Button) findViewById(R.id.btnStop)).setEnabled(true);
         startService(new Intent(MainActivity.this, AccSevice.class)); //текущий класс, вызываемый класс
+        notificationManager.notify(123, builder.build());
+
     }
     public void servStop(View view) {
         ((Button) findViewById(R.id.btnStart)).setEnabled(true);
