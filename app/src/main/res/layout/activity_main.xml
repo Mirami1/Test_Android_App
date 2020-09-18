@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:paddingLeft="60dp"
+    android:paddingRight="60dp"
+    android:paddingTop="60dp"
+    android:paddingBottom="60dp"
+    tools:context=".MainActivity"
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:gravity="center">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Начать отслеживание"
+        android:onClick="servStart"
+        android:textSize="20sp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Завершить отслеживание"
+        android:onClick="servStop"
+        android:textSize="20sp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/btnGraph"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Просмтр графиков"
+        android:onClick="graph"
+        android:textSize="20sp"
+        android:textAllCaps="false"/>
 
-            <Button
-                android:id="@+id/button_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Button gg" />
-
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello World!" />
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
