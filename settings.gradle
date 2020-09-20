@@ -1,2 +1,4 @@
+
+include ':android'
 include ':app'
 rootProject.name = "Test Application"

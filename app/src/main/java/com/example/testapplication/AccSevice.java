@@ -80,22 +80,20 @@ public class AccSevice extends Service {
         m = new measure();
 
         //подготовка к записи файла - проверка наличия директории
-        File dir = new File(Environment.getExternalStorageDirectory(),"AccServiceData");
-        if(!dir.exists())
+        File dir = new File(Environment.getExternalStorageDirectory(), "AccServiceData");
+        if (!dir.exists())
             dir.mkdir();
         task();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         manager.unregisterListener(listener); //отписаться от получения показаний
-        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
         flag = false; //останавливаем task
 
     }
@@ -139,4 +137,6 @@ public class AccSevice extends Service {
             }
         }).start();
     }
+
+
 }
